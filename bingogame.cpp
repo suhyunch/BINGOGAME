@@ -11,6 +11,7 @@ int AI[25];
 int bingo;
 int bingoAI;
 int cnt_AI[25];
+int cnt_AI_bingo[25];
 bool rowchk(int n, bool mode);
 bool colchk(int n, bool mode);
 
@@ -170,7 +171,7 @@ int hard_sel() {
 				int tmp = AI[i];
 				AI[i] = INT_MAX;
 				cnt_line();
-				cnt_AI[i] = (bingoAI - cnt_AI[i]);//���� �� �� ������
+				cnt_AI[i] = (bingoAI - cnt_AI[i]);
 
 				int s = (i / 5) * 5;
 				for (int j = s; j < s + 5; ++j) {
@@ -225,7 +226,8 @@ int hard_sel() {
 				int tmp = AI[i];
 				AI[i] = INT_MAX;
 				cnt_line();
-				cnt_AI[i] = (bingoAI - cnt_AI[i]);//���� �� �� ������
+				cnt_AI[i] = (bingoAI - cnt_AI_bingo[i]);//���� �� �� ������
+                    cnt_AI_bingo[i]=bingoAI;
 
 				int s = (i / 5) * 5;
 				for (int j = s; j < s + 5; ++j) {
