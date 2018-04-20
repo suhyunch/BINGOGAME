@@ -66,8 +66,8 @@ int main() {
 		for (int i = 0; i < 25; i++) {
 			if (board[i] == cinput)
 				board[i] = INT_MAX;
-			if(AI[i]==cinput)
-				AI[i]= INT_MAX;
+			if (AI[i] == cinput)
+				AI[i] = INT_MAX;
 		}
 		print_board();
 
@@ -76,7 +76,7 @@ int main() {
 			system("cls");
 			cout << "Player의 선택 : " << cinput << endl;
 
-			if(score_chker(bingo, bingoAI)) print_board();
+			if (score_chker(bingo, bingoAI)) print_board();
 			else {
 				cout << "최종 결과" << endl;
 				print_board();
@@ -85,9 +85,9 @@ int main() {
 			}
 		}
 		system("cls");
-		int aiinput = iAImode==1? easy_sel():hard_sel();
+		int aiinput = iAImode == 1 ? easy_sel() : hard_sel();
 		cout << "Player의 선택 : " << cinput << endl;
-		cout << "AI의 선택 : " <<aiinput<< endl;
+		cout << "AI의 선택 : " << aiinput << endl;
 		used[aiinput] = true;
 		for (int i = 0; i < 25; i++) {
 			if (board[i] == aiinput)
@@ -95,7 +95,7 @@ int main() {
 			if (AI[i] == aiinput)
 				AI[i] = INT_MAX;
 		}
-		cout <<endl<< cnt <<"번째 turn 결과 :::::::::::::::::::::::" << endl;
+		cout << endl << cnt << "번째 turn 결과 :::::::::::::::::::::::" << endl;
 		print_board();
 
 		cnt_line();
@@ -148,9 +148,9 @@ bool colchk(int n, bool mode) {
 }
 
 
-int easy_sel(){
+int easy_sel() {
 	while (1) {
-		int pick = rand() % 25+1;
+		int pick = rand() % 25 + 1;
 		if (!used[pick]) {
 			used[pick] = true;
 			return pick;
@@ -162,7 +162,7 @@ int hard_sel() {
 	int mxb = 0;
 	int mxs = 0;
 	int pick;
-	int idx=0;
+	int idx = 0;
 	bool ran = rand() % 2;
 	if (ran) {
 		for (int i = 0; i < 25; ++i) {
@@ -172,7 +172,7 @@ int hard_sel() {
 				AI[i] = INT_MAX;
 				cnt_line();
 				cnt_AI[i] = (bingoAI - cnt_AI[i]);
-                    cnt_AI_bingo[i]=bingoAI;
+				cnt_AI_bingo[i] = bingoAI;
 
 				int s = (i / 5) * 5;
 				for (int j = s; j < s + 5; ++j) {
@@ -221,14 +221,14 @@ int hard_sel() {
 		return pick;
 	}
 	else {
-		for (int i = 24; i >=0; --i) {
+		for (int i = 24; i >= 0; --i) {
 			mxb = 0;
 			if (AI[i] != INT_MAX) {
 				int tmp = AI[i];
 				AI[i] = INT_MAX;
 				cnt_line();
 				cnt_AI[i] = (bingoAI - cnt_AI_bingo[i]);
-                    cnt_AI_bingo[i]=bingoAI;
+				cnt_AI_bingo[i] = bingoAI;
 
 				int s = (i / 5) * 5;
 				for (int j = s; j < s + 5; ++j) {
