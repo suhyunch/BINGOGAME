@@ -147,7 +147,6 @@ bool colchk(int n, bool mode) {
 	return true;
 }
 
-
 int easy_sel() {
 	while (1) {
 		int pick = rand() % 25 + 1;
@@ -157,6 +156,7 @@ int easy_sel() {
 		}
 	}
 }
+
 int hard_sel() {
 	int cnt_AI2[25] = { 0, };
 	int mxb = 0;//선택했을 때, 최대 빙고가 되는 수
