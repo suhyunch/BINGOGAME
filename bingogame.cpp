@@ -16,6 +16,7 @@ bool rowchk(int n, bool mode);
 bool colchk(int n, bool mode);
 
 void print_board();
+void print_board_end();
 int score_chker(int bingo, int bingoAI);
 int easy_sel();
 int hard_sel();
@@ -79,7 +80,7 @@ int main() {
 			if (score_chker(bingo, bingoAI)) print_board();
 			else {
 				cout << "최종 결과" << endl;
-				print_board();
+				print_board_end();
 				system("pause");
 				return 0;
 			}
@@ -110,7 +111,7 @@ int main() {
 			}
 			else {
 				cout << "최종 결과" << endl;
-				print_board();
+				print_board_end();
 				system("pause");
 				return 0;
 			}
@@ -147,6 +148,7 @@ bool colchk(int n, bool mode) {
 	return true;
 }
 
+
 int easy_sel() {
 	while (1) {
 		int pick = rand() % 25 + 1;
@@ -156,7 +158,6 @@ int easy_sel() {
 		}
 	}
 }
-
 int hard_sel() {
 	int cnt_AI2[25] = { 0, };
 	int mxb = 0;//선택했을 때, 최대 빙고가 되는 수
@@ -228,7 +229,19 @@ int hard_sel() {
 	}
 	return pick;
 }
+
 void print_board() {
+	cout << "==============Player==============" << endl;
+	for (int i = 0; i < 5; i++) {
+		for (int j = 0; j < 5; j++) {
+			if (board[i * 5 + j] != INT_MAX) cout << board[i * 5 + j] << "\t";
+			else cout << "*\t";
+		}cout << endl;
+	}
+	return;
+}
+
+void print_board_end() {
 	cout << "==============Player==============" << endl;
 	for (int i = 0; i < 5; i++) {
 		for (int j = 0; j < 5; j++) {
