@@ -10,7 +10,7 @@ int board[25];
 int AI[25];
 int bingo;
 int bingoAI;
-int cnt_AI[25];
+int cnt_AI[25];//현재 bingo 개수
 int cnt_AI_bingo[25];
 bool rowchk(int n, bool mode);
 bool colchk(int n, bool mode);
@@ -159,44 +159,51 @@ int easy_sel() {
 }
 int hard_sel() {
 	int cnt_AI2[25] = { 0, };
-	int mxb = 0;
-	int mxs = 0;
-	int pick;
-	int idx = 0;
-	bool ran = rand() % 2;
-	if (ran) {
-		for (int i = 0; i < 25; ++i) {
-			mxb = 0;
-			if (AI[i] != INT_MAX) {
-				int tmp = AI[i];
-				AI[i] = INT_MAX;
-				cnt_line();
-				cnt_AI[i] = (bingoAI - cnt_AI[i]);
-				cnt_AI_bingo[i] = bingoAI;
+	int mxb = 0;//선택했을 때, 최대 빙고가 되는 수
+	int mxb_idx;//최대 빙고가 되는 인덱스
+	int mxs = 0;//빙고가 되는 것이 없더라
+	int mxs_idx = 0;
+	int i = rand() % 25;
+	int cnt = 25;
+	int pick;//return 값
+	while (cnt-->0) {
+		if (AI[i] != INT_MAX) {
+			int tmp = AI[i];
+			cnt_line();
+			int tmp_bingo = bingoAI;
+			AI[i] = INT_MAX;
+			cnt_line();
+			cnt_AI[i] = (tmp_bingo - bingoAI);
+			//AI[i]를 선택하였을 때의 빙고 개수 증가량
 
-				int s = (i / 5) * 5;
-				for (int j = s; j < s + 5; ++j) {
-					if (AI[j] == INT_MAX && j != i) {
-						cnt_AI2[i]++;
-					}
+			int s = (i / 5) * 5;
+			for (int j = s; j < s + 5; ++j) {
+				if (AI[j] == INT_MAX && j != i) {
+					cnt_AI2[i]++;
 				}
-				s = (i % 5);
+			}
+			s = (i % 5);
+			for (int j = 0; j < 5; ++j) {
+				if (AI[j * 5 + s] == INT_MAX && j * 5 + s != i) cnt_AI2[i]++;
+			}
+			if ((i / 5) == (i % 5)) {
 				for (int j = 0; j < 5; ++j) {
+					if (AI[j * 5 + j] == INT_MAX && j * 5 + j != i) cnt_AI2[i]++;
+				}
+			}
+			if (i % 4 == 0 && i != 24 && i != 0) {
+				for (int j = 0; j < 5; ++j) {
+					if (AI[4 * (j + 1)] == INT_MAX && 4 * (j + 1) != i) cnt_AI2[i]++;
+				}
+			}
 
-					if (AI[j * 5 + s] == INT_MAX && j * 5 + s != i) cnt_AI2[i]++;
+			if (cnt_AI[i] != 0) {
+				if (cnt_AI[i]>mxb) {
+					mxb = cnt_AI[i];
+					mxb_idx = i;
+					pick = tmp;
 				}
-				if ((i / 5) == (i % 5)) {
-					for (int j = 0; j < 5; ++j) {
-						if (AI[j * 5 + j] == INT_MAX && j * 5 + j != i) cnt_AI2[i]++;
-					}
-				}
-				if (i % 4 == 0 && i != 24 && i != 0) {
-					for (int j = 0; j < 5; ++j) {
-						if (AI[4 * (j + 1)] == INT_MAX && 4 * (j + 1) != i) cnt_AI2[i]++;
-					}
-				}
-
-				if (mxb == 0) {
+				else if (cnt_AI[i] == mxb) {
 					for (int j = 0; j < 25; j++) {
 						if (mxs < cnt_AI2[j]) {
 							mxs = cnt_AI2[j];
@@ -204,80 +211,23 @@ int hard_sel() {
 						}
 					}
 				}
-				else {
-					if (cnt_AI[i] >= mxb) {
-						if (mxb == cnt_AI[i]) {
-							pick = cnt_AI2[i] > cnt_AI2[idx] ? tmp : AI[idx];
-						}
-						else {
-							mxb = cnt_AI[i];
-							pick = tmp;
-						}
-					}
-				}
-				AI[i] = tmp;
 			}
-		}
-		return pick;
-	}
-	else {
-		for (int i = 24; i >= 0; --i) {
-			mxb = 0;
-			if (AI[i] != INT_MAX) {
-				int tmp = AI[i];
-				AI[i] = INT_MAX;
-				cnt_line();
-				cnt_AI[i] = (bingoAI - cnt_AI_bingo[i]);
-				cnt_AI_bingo[i] = bingoAI;
 
-				int s = (i / 5) * 5;
-				for (int j = s; j < s + 5; ++j) {
-					if (AI[j] == INT_MAX && j != i) {
-						cnt_AI2[i]++;
+			if (mxb == 0) {
+				for (int j = 0; j < 25; j++) {
+					if (mxs < cnt_AI2[j]) {
+						mxs = cnt_AI2[j];
+						pick = tmp;
 					}
 				}
-				s = (i % 5);
-				for (int j = 0; j < 5; ++j) {
-
-					if (AI[j * 5 + s] == INT_MAX && j * 5 + s != i) cnt_AI2[i]++;
-				}
-				if ((i / 5) == (i % 5)) {
-					for (int j = 0; j < 5; ++j) {
-						if (AI[j * 5 + j] == INT_MAX && j * 5 + j != i) cnt_AI2[i]++;
-					}
-				}
-				if (i % 4 == 0 && i != 24 && i != 0) {
-					for (int j = 0; j < 5; ++j) {
-						if (AI[4 * (j + 1)] == INT_MAX && 4 * (j + 1) != i) cnt_AI2[i]++;
-					}
-				}
-
-				if (mxb == 0) {
-					for (int j = 0; j < 25; j++) {
-						if (mxs < cnt_AI2[j]) {
-							mxs = cnt_AI2[j];
-							pick = tmp;
-						}
-					}
-				}
-				else {
-					if (cnt_AI[i] >= mxb) {
-						if (mxb == cnt_AI[i]) {
-							pick = cnt_AI2[i] > cnt_AI2[idx] ? tmp : AI[idx];
-						}
-						else {
-							mxb = cnt_AI[i];
-							pick = tmp;
-						}
-					}
-				}
-				AI[i] = tmp;
 			}
+			AI[i] = tmp;
 		}
-		return pick;
+		i++;
+		if (i == 25) i = 0;
 	}
+	return pick;
 }
-
 void print_board() {
 	cout << "==============Player==============" << endl;
 	for (int i = 0; i < 5; i++) {
